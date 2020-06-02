@@ -23,22 +23,32 @@ class Professor {
 }
 
 class Term {
-  String term;
+  final String term;
   //int aplus;
-  int a;
+  final int a;
   //int aminus;
   //int bplus;
-  int b;
+  final int b;
   //int bminus;
   //int cplus;
-  int c;
+  final int c;
   //int cminus;
   //int dplus;
-  int d;
+  final int d;
   //int dminus;
-  int f;
+  final int f;
 
-  Term(this.term, this.a, this.b, this.c, this.d, this.f);
+  const Term(this.term, this.a, this.b, this.c, this.d, this.f);
+
+  /*fromTerm(Term another){
+    this.term = another.term;
+    this.a = another.a;
+    this.b = another.b;
+    this.c = another.c;
+    this.d = another.d;
+    this.f = another.f;
+  }*/
+
 
 
 /*Term(this.term, this.aplus, this.a, this.aminus, this.bplus, this.b, this.bminus,

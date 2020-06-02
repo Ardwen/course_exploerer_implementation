@@ -52,6 +52,16 @@ class PieChart2State extends State {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const <Widget>[
+                Text(
+                  'GPA: 3.2',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 21)
+                ),
+                SizedBox(
+                  height: 25,
+                ),
                 Indicator(
                   color: Color(0xff0293ee),
                   text: 'A',

@@ -16,11 +16,11 @@ class BarChartSample1State extends State<BarChartSample1> {
   final Duration animDuration = const Duration(milliseconds: 250);
   
   //dummy data
-  List<Term> term1 = new List<Term>();
-  Term t11 = new Term('FALL 2019', 357,18,11,13,23);
-  List<Term> term2 = new List<Term>();
-  Term t21 = new Term('SPR 2018', 66, 88, 15, 1, 0);
-  Term t22 = new Term('SPR 2017', 54, 23, 12, 1, 0);
+  Term t0 = new Term('N/A', 0,0,0,0,0);
+  List<Term> term2 = <Term>[Term('FALL 2019', 357,18,11,13,23),Term('SPR 2018', 66, 88, 15, 1, 0)];
+  List<Term> term1 = <Term>[Term('SPR 2017', 54, 23, 12, 1, 0)];
+  Professor profes1;
+  Professor profes2;
 
   int touchedIndex = -1;
 
@@ -29,6 +29,18 @@ class BarChartSample1State extends State<BarChartSample1> {
   Professor _professor;
 
   Term _curterm;
+
+
+  @override
+  void initState() {
+    super.initState();
+    term1.add(t0);
+    term2.add(t0);
+    profes1 = new Professor("Challen, Geoffrey W", 3.8, term1);
+    profes2 = new Professor("Chapman, William L", 3.0, term2);
+    _professor = profes1;
+    _curterm = t0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,12 +230,6 @@ class BarChartSample1State extends State<BarChartSample1> {
 
   //dropDown professor names
   DropdownButton _ProfessorDown() {
-    term1.add(t11);
-    Professor profes1 = new Professor("Challen, Geoffrey W", 3.8, term1);
-    term2.add(t22);
-    term2.add(t21);
-    Professor profes2 = new Professor("Chapman, William L", 3.0, term2);
-    _professor = profes1;
     return DropdownButton<Professor>(
       items: [
         DropdownMenuItem<Professor>(
@@ -239,9 +245,11 @@ class BarChartSample1State extends State<BarChartSample1> {
           value: profes3,
         ),*/
       ],
-      onChanged: (value) {
+      onChanged: (Professor newvalue) {
         setState(() {
-          _professor = value;
+          _curterm = t0;
+          _professor = newvalue;
+
         });
       },
       hint: Text('Select Item'),
@@ -252,110 +260,26 @@ class BarChartSample1State extends State<BarChartSample1> {
   }
   
   //drop down button
-  DropdownButton _TermDown () {
-    _curterm = t11;
+  DropdownButton<Term> _TermDown () {
+
     return DropdownButton<Term>(
-      items: [
-        DropdownMenuItem(
-          value: t11,
-          child: Text(t11.term),
-        ),
-        DropdownMenuItem(
-          value: t21,
-          child: Text(t21.term),
-        )
-      ],//_dropDowntermItem(),
-      onChanged: (value){
-        setState(() {
-          _curterm = value;
-        });
-     },
       value: _curterm,
+      onChanged: (Term newt){
+        setState(() {
+          _curterm = newt;
+        });
+      },
+      items: _professor.terms.map((Term tt) {
+        return  DropdownMenuItem<Term>(
+          value: tt,
+          child:
+              Text(
+                tt.term,
+              ),
+        );
+      }).toList(),
       hint: Text('Select Term'),
       isExpanded: true,
     );
   }
-
-  /*List<DropdownMenuItem<Term>> _dropDowntermItemDefault() {
-    List<DropdownMenuItem<Term>> l = new List<DropdownMenuItem<Term>>();
-    l.add(
-        new DropdownMenuItem(
-          child: Text("N/A"),
-        )
-    );
-    return l;
-  }*/
-
-  //drop down term items 
-  List<DropdownMenuItem<Term>> _dropDowntermItem(){
-    return _professor.terms.map(
-        (value) => DropdownMenuItem(
-          value: value,
-          child: Text(value.term),
-        )
-    ).toList();
-  }
-  
-  //Data after selections
-  /*BarChartData filterData() {
-    return BarChartData(
-      barTouchData: BarTouchData(
-        enabled: false,
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          textStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-          margin: 16,
-          getTitles: (double value) {
-            switch (value.toInt()) {
-              case 0:
-                return 'A';
-              case 1:
-                return 'B';
-              case 2:
-                return 'C';
-              case 3:
-                return 'D';
-              case 4:
-                return 'F';
-              default:
-                return '';
-            }
-          },
-        ),
-        leftTitles: SideTitles(
-          showTitles: false,
-        ),
-      ),
-      borderData: FlBorderData(
-        show: false,
-      ),
-      barGroups: List.generate(5, (i) {
-        switch (i) {
-          case 0:
-            return makeGroupData(0, _curterm.a, isTouched: i == touchedIndex);
-          case 1:
-            return makeGroupData(1, _curterm.b, isTouched: i == touchedIndex);
-          case 2:
-            return makeGroupData(2, _curterm.c, isTouched: i == touchedIndex);
-          case 3:
-            return makeGroupData(3, _curterm.d, isTouched: i == touchedIndex);
-          case 4:
-            return makeGroupData(4, _curterm.f, isTouched: i == touchedIndex);
-          default:
-            return null;
-        }
-      }),
-    );
-  }*/
-
-  /*Future<dynamic> refreshState() async {
-    setState(() {});
-    await Future<dynamic>.delayed(animDuration + const Duration(milliseconds: 50));
-    if (isPlaying) {
-      refreshState();
-    }
-  }*/
 }
