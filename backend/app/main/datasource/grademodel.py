@@ -3,16 +3,16 @@ from .database import db
 
 class Term(db.EmbeddedDocument):
     term_name = db.StringField(required=True, unique=True)
-    A = db.Intfield()
-    B = db.Intfield()
-    C = db.Intfield()
-    D = db.Intfield()
-    F = db.Intfield()
+    A = db.IntField()
+    B = db.IntField()
+    C = db.IntField()
+    D = db.IntField()
+    F = db.IntField()
 
 
 class Professor(db.EmbeddedDocument):
     professor_name = db.StringField(required=True, unique=True)
-    professor_avg = avg_gpa = db.FloatField()
+    professor_avg = db.FloatField()
     terms = db.EmbeddedDocumentListField(Term)
 
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'pieChart.dart';
-import 'barChart.dart';
+import 'PieChart.dart';
+import 'BarChart.dart';
 
 class PieChartPage extends StatelessWidget {
   final Color barColor = Colors.white;
