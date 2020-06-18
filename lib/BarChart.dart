@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'filterData.dart';
+import 'model/filterData.dart';
 
 class BarChartSample1 extends StatefulWidget {
 
@@ -15,7 +15,7 @@ class BarChartSample1State extends State<BarChartSample1> {
   final Color barBackgroundColor = const Color(0xff72d8bf);
   final Duration animDuration = const Duration(milliseconds: 250);
   
-  //dummy data
+  //todo Term model
   Term t0 = new Term('N/A', 0,0,0,0,0);
   List<Term> term2 = <Term>[Term('FALL 2019', 357,18,11,13,23),Term('SPR 2018', 66, 88, 15, 1, 0)];
   List<Term> term1 = <Term>[Term('SPR 2017', 54, 23, 12, 1, 0)];

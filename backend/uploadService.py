@@ -42,7 +42,9 @@ dict_term={'professor_name':"",
            'D':0,
            'F':0}
 
-for i in range(10,100):
+for i in range(100,5000):
+    if(i%1000 == 0):
+        print(str(i)+"finished")
     entry = df.iloc[i]
     term_pts = 0
     student_count = 0

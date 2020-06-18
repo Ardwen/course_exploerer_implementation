@@ -2,18 +2,50 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import 'indicator.dart';
+import 'model/CourseModel.dart';
+import 'DataService.dart';
 
 class PieChartSample2 extends StatefulWidget {
+
+  String courseID;
+  PieChartSample2(this.courseID);
   @override
   State<StatefulWidget> createState() => PieChart2State();
 }
 
-class PieChart2State extends State {
+class PieChart2State extends State<PieChartSample2> {
   int touchedIndex;
+  CourseModel course;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    _loadCourseDetail();
+    super.initState();
+  }
+
+  void _loadCourseDetail() {
+    _isLoading = true;
+    getCourseGPA(widget.courseID).then((CourseModel detailcourse) {
+      this.setState(() {
+        course = detailcourse;
+        _isLoading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
+    return _isLoading? Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CircularProgressIndicator(),
+        )
+      ],
+    )
+    : AspectRatio(
       aspectRatio: 1.3,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
@@ -53,7 +85,8 @@ class PieChart2State extends State {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const <Widget>[
                 Text(
-                  'GPA: 3.2',
+                  //todo fix string
+                  'GPA: '+course.courseAvg,
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -120,9 +153,10 @@ class PieChart2State extends State {
         final double radius = isTouched ? 60 : 50;
         switch (i) {
           case 0:
+            //todo fix value
             return PieChartSectionData(
               color: const Color(0xff0293ee),
-              value: 40,
+              value: double(course.A),
               title: '40%',
               radius: radius,
               titleStyle: TextStyle(

@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       home: const MyHomePage(title: 'fl_chart'),
+      routes: {
+        PieChartPage.routeName: (context) => PieChartPage(),
+      },
     );
   }
 }
