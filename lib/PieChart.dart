@@ -7,8 +7,8 @@ import 'DataService.dart';
 
 class PieChartSample2 extends StatefulWidget {
 
-  String courseID;
-  PieChartSample2(this.courseID);
+  CourseModel course;
+  PieChartSample2(this.course);
   @override
   State<StatefulWidget> createState() => PieChart2State();
 }
@@ -16,36 +16,21 @@ class PieChartSample2 extends StatefulWidget {
 class PieChart2State extends State<PieChartSample2> {
   int touchedIndex;
   CourseModel course;
-  bool _isLoading = false;
+  //static const String courseAVG = 'a';
 
   @override
   void initState() {
-    _loadCourseDetail();
     super.initState();
   }
 
-  void _loadCourseDetail() {
-    _isLoading = true;
-    getCourseGPA(widget.courseID).then((CourseModel detailcourse) {
-      this.setState(() {
-        course = detailcourse;
-        _isLoading = false;
-      });
-    });
+
+  String getpercent(int gradeStudent){
+    return (gradeStudent/course.courseStudents).toString();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading? Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: CircularProgressIndicator(),
-        )
-      ],
-    )
-    : AspectRatio(
+    return AspectRatio(
       aspectRatio: 1.3,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
@@ -83,10 +68,9 @@ class PieChart2State extends State<PieChartSample2> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
+              children: <Widget>[
                 Text(
-                  //todo fix string
-                  'GPA: '+course.courseAvg,
+                   'GPA: ${course.courseAvg}',
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -156,8 +140,8 @@ class PieChart2State extends State<PieChartSample2> {
             //todo fix value
             return PieChartSectionData(
               color: const Color(0xff0293ee),
-              value: double(course.A),
-              title: '40%',
+              value: course.A.toDouble(),
+              title: getpercent(course.A),
               radius: radius,
               titleStyle: TextStyle(
                   fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
@@ -165,8 +149,8 @@ class PieChart2State extends State<PieChartSample2> {
           case 1:
             return PieChartSectionData(
               color: const Color(0xfff8b250),
-              value: 30,
-              title: '30%',
+              value: course.B.toDouble(),
+              title: getpercent(course.B),
               radius: radius,
               titleStyle: TextStyle(
                   fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
@@ -174,8 +158,8 @@ class PieChart2State extends State<PieChartSample2> {
           case 2:
             return PieChartSectionData(
               color: const Color(0xff845bef),
-              value: 15,
-              title: '15%',
+              value: course.C.toDouble(),
+              title: getpercent(course.C),
               radius: radius,
               titleStyle: TextStyle(
                   fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
@@ -183,8 +167,8 @@ class PieChart2State extends State<PieChartSample2> {
           case 3:
             return PieChartSectionData(
               color: const Color(0xff13d38e),
-              value: 10,
-              title: '10%',
+              value: course.D.toDouble(),
+              title: getpercent(course.D),
               radius: radius,
               titleStyle: TextStyle(
                   fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
@@ -192,8 +176,8 @@ class PieChart2State extends State<PieChartSample2> {
           case 4:
             return PieChartSectionData(
               color: const Color(0xff9e9e9e),
-              value: 5,
-              title: '5%',
+              value: course.F.toDouble(),
+              title: getpercent(course.F),
               radius: radius,
               titleStyle: TextStyle(
                   fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),

@@ -1,17 +1,20 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:coursegpa/model/CourseModel.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'model/filterData.dart';
 
 class BarChartSample1 extends StatefulWidget {
+  CourseModel course;
 
   @override
   State<StatefulWidget> createState() => BarChartSample1State();
 }
 
 class BarChartSample1State extends State<BarChartSample1> {
+  CourseModel course;
   final Color barBackgroundColor = const Color(0xff72d8bf);
   final Duration animDuration = const Duration(milliseconds: 250);
   
@@ -28,18 +31,14 @@ class BarChartSample1State extends State<BarChartSample1> {
 
   Professor _professor;
 
+  String _professor_name;
+
   Term _curterm;
 
 
   @override
   void initState() {
     super.initState();
-    term1.add(t0);
-    term2.add(t0);
-    profes1 = new Professor("Challen, Geoffrey W", 3.8, term1);
-    profes2 = new Professor("Chapman, William L", 3.0, term2);
-    _professor = profes1;
-    _curterm = t0;
   }
 
   @override
@@ -228,40 +227,33 @@ class BarChartSample1State extends State<BarChartSample1> {
     );
   }
 
+
   //dropDown professor names
   DropdownButton _ProfessorDown() {
-    return DropdownButton<Professor>(
-      items: [
-        DropdownMenuItem<Professor>(
-          child: Text(profes1.name),
-          value: profes1,
-        ),
-        DropdownMenuItem<Professor>(
-          child: Text(profes2.name),
-          value: profes2,
-        ),
-        /*DropdownMenuItem<Professor>(
-          child: Text(profes3.name),
-          value: profes3,
-        ),*/
-      ],
-      onChanged: (Professor newvalue) {
+    return
+      DropdownButton<String>(
+      items: course.professor_names.map((String pp) {
+        return  DropdownMenuItem<String>(
+          value: pp,
+          child: Text(pp),
+        );
+      }).toList(),
+      onChanged: (String newprof) {
         setState(() {
           _curterm = t0;
-          _professor = newvalue;
-
+          _professor = getProfessorDetail(newprof);
+          _professor_name = newprof;
         });
       },
       hint: Text('Select Item'),
       //value: _value,
       isExpanded: true,
-      value: _professor,
+      value: _professor_name,
     );
   }
   
   //drop down button
   DropdownButton<Term> _TermDown () {
-
     return DropdownButton<Term>(
       value: _curterm,
       onChanged: (Term newt){

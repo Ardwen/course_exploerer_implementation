@@ -13,4 +13,5 @@ Future<CourseModel> getCourseGPA(String courseid) async {
   }
 }
 
+Future<Professor>
 //todo getProfessorGPA
