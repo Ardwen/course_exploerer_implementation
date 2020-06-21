@@ -5,10 +5,11 @@ import 'package:coursegpa/model/CourseModel.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'model/filterData.dart';
+import 'DataService.dart';
 
 class BarChartSample1 extends StatefulWidget {
   CourseModel course;
-
+  BarChartSample1(this.course);
   @override
   State<StatefulWidget> createState() => BarChartSample1State();
 }
@@ -19,25 +20,24 @@ class BarChartSample1State extends State<BarChartSample1> {
   final Duration animDuration = const Duration(milliseconds: 250);
   
   //todo Term model
-  Term t0 = new Term('N/A', 0,0,0,0,0);
-  List<Term> term2 = <Term>[Term('FALL 2019', 357,18,11,13,23),Term('SPR 2018', 66, 88, 15, 1, 0)];
-  List<Term> term1 = <Term>[Term('SPR 2017', 54, 23, 12, 1, 0)];
-  Professor profes1;
-  Professor profes2;
+  Term t0 = new Term(term:'N/A', a:0,b:0,c:0,d:0,f:0);
 
   int touchedIndex = -1;
 
-  bool isPlaying = false;
+  bool _isLoading = false;
 
   Professor _professor;
 
-  String _professor_name;
 
   Term _curterm;
 
 
   @override
   void initState() {
+    course = widget.course;
+    _professor = course.professor_names[0];
+    course.professor_names.forEach((item) => (item.terms.add(t0)));
+    _curterm=t0;
     super.initState();
   }
 
@@ -231,27 +231,28 @@ class BarChartSample1State extends State<BarChartSample1> {
   //dropDown professor names
   DropdownButton _ProfessorDown() {
     return
-      DropdownButton<String>(
-      items: course.professor_names.map((String pp) {
-        return  DropdownMenuItem<String>(
+      DropdownButton<Professor>(
+      items: course.professor_names.map((Professor pp) {
+        return  DropdownMenuItem<Professor>(
           value: pp,
-          child: Text(pp),
+          child: Text(pp.name),
         );
-      }).toList(),
-      onChanged: (String newprof) {
+        }).toList(),
+      onChanged: (Professor newprof){
         setState(() {
           _curterm = t0;
-          _professor = getProfessorDetail(newprof);
-          _professor_name = newprof;
-        });
-      },
-      hint: Text('Select Item'),
+          _professor=newprof;
+
+          });
+        },
+      hint: Text('Select Professor'),
       //value: _value,
       isExpanded: true,
-      value: _professor_name,
+      value: _professor,
     );
   }
-  
+
+
   //drop down button
   DropdownButton<Term> _TermDown () {
     return DropdownButton<Term>(
@@ -261,7 +262,16 @@ class BarChartSample1State extends State<BarChartSample1> {
           _curterm = newt;
         });
       },
-      items: _professor.terms.map((Term tt) {
+      items:/* [
+      DropdownMenuItem<Term>(
+      value: t0,
+      child:
+      Text(
+        t0.term,
+      ),
+    )
+
+      ],*/_professor.terms.map((Term tt) {
         return  DropdownMenuItem<Term>(
           value: tt,
           child:

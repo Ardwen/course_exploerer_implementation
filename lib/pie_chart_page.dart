@@ -7,15 +7,13 @@ import 'DataService.dart';
 
 class CoursePageArgument{
   final String courseID;
-  final String courseName;
-  CoursePageArgument(this.courseID,this.courseName);
+  CoursePageArgument(this.courseID);
 }
 
 class PieChartPage extends StatefulWidget {
   static const routeName = '/GPAchartPage';
   String courseID;
-  String courseName;
-  PieChartPage(this.courseID,this.courseName);
+  PieChartPage({this.courseID});
   @override
   State<StatefulWidget> createState() => PieChartPageState();
 }
@@ -38,6 +36,7 @@ class PieChartPageState extends State<PieChartPage>  {
 
   void _loadCourseDetail() {
     _isLoading = true;
+    //"widget.courseID"
     getCourseGPA(widget.courseID).then((CourseModel detailcourse) {
       this.setState(() {
         course = detailcourse;
@@ -56,7 +55,7 @@ class PieChartPageState extends State<PieChartPage>  {
           child: CircularProgressIndicator(),
         )
       ],
-    ) :Container(
+    ) : Container(
       color: const Color(0xffeceaeb),
       child: Padding(
         padding: const EdgeInsets.all(28.0),
@@ -68,7 +67,7 @@ class PieChartPageState extends State<PieChartPage>  {
                 padding: EdgeInsets.only(left: 8.0),
                 child: Text(
                   //ars.courseID+args.courseName,
-                  'CS 125 Intrduction to Programming',
+                  'Introduction to Accounting',
                   style: TextStyle(
                       color: Color(
                         0xff333333,
@@ -86,7 +85,7 @@ class PieChartPageState extends State<PieChartPage>  {
             const SizedBox(
               height: 18,
             ),
-            BarChartSample1(),
+            BarChartSample1(course),
           ],
         ),
       ),

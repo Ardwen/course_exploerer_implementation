@@ -22,6 +22,11 @@ class Course(db.Document):
     course_name = db.StringField(required=True)
     course_students = db.IntField(default=0)
     avg_gpa = db.FloatField(default=0.0)
+    A = db.IntField()
+    B = db.IntField()
+    C = db.IntField()
+    D = db.IntField()
+    F = db.IntField()
     professors = db.EmbeddedDocumentListField(Professor)
 
 

@@ -38,7 +38,10 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SafeArea(
         child: PageView(
           children: <Widget>[
-            PieChartPage(),
+            FlatButton(
+              child: Text('check gpa'),
+              onPressed:() => Navigator.pushNamed(context, PieChartPage.routeName, arguments: CoursePageArgument("ACCY200"))
+            ),
           ],
         ),
       ),

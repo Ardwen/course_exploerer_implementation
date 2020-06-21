@@ -20,12 +20,13 @@ class PieChart2State extends State<PieChartSample2> {
 
   @override
   void initState() {
+    course = widget.course;
     super.initState();
   }
 
 
   String getpercent(int gradeStudent){
-    return (gradeStudent/course.courseStudents).toString();
+    return (gradeStudent/course.courseStudents*100).toStringAsFixed(2)+"%";
   }
 
   @override
@@ -70,7 +71,7 @@ class PieChart2State extends State<PieChartSample2> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                   'GPA: ${course.courseAvg}',
+                   'GPA: ${course.courseAvg.toStringAsFixed(2)}',
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,

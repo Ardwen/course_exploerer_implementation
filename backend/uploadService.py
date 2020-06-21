@@ -3,16 +3,16 @@ import pandas
 import time
 
 #upload course information if any new course is added
-#c_dict = {
-#    'course_name':""
-#}
-#course = pandas.read_csv('uiuc_course.csv')
-#for i in range(len(course)):
-#    c = course.iloc[i]
-#    course_id = c[0] + str(c[1])
-#    c_dict['course_name'] = c[2]
-#    requests.post("http://127.0.0.1:5000/course/" + course_id, json=c_dict)
-#    time.sleep(2)
+c_dict = {
+    'course_name':""
+}
+course = pandas.read_csv('uiuc_course.csv')
+for i in range(20,len(course)):
+    c = course.iloc[i]
+    course_id = c[0] + str(c[1])
+    c_dict['course_name'] = c[2]
+    requests.post("http://127.0.0.1:5000/course/" + course_id, json=c_dict)
+    time.sleep(1)
 
 ##upload the grade for new term. update the course avg, student avg and professor avg
 df = pandas.read_csv('uiuc-gpa-dataset.csv')
@@ -42,7 +42,7 @@ dict_term={'professor_name':"",
            'D':0,
            'F':0}
 
-for i in range(100,5000):
+for i in range(85,10000):
     if(i%1000 == 0):
         print(str(i)+"finished")
     entry = df.iloc[i]
@@ -61,6 +61,6 @@ for i in range(100,5000):
     dict_term['term_name'] = entry[2]
     dict_term['term_students'] = student_count
     course_id = entry['Subject'] + str(int(entry['Number']))
-    #print(course_id)
+    #print(dict_term)
     requests.post("http://127.0.0.1:5000/course/professor/"+course_id, json=dict_term)
     time.sleep(1)

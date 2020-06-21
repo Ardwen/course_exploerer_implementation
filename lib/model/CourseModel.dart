@@ -11,11 +11,11 @@ class CourseModel {
   int D;
   int F;
   int courseStudents;
-  List<String> professor_names;
+  List<Professor> professor_names;
 
   CourseModel({this.courseName, this.courseID, this.courseAvg,
-    this.A, this.B, this.C, this.D, this.F, this.courseStudents, this.professor_names = const [
-    ]});
+    this.A, this.B, this.C, this.D, this.F, this.courseStudents, this.professor_names = const []
+  });
 
   factory CourseModel.fromJson(Map<String, dynamic> json) {
     return new CourseModel(
@@ -34,12 +34,12 @@ class CourseModel {
 }
 
 class ProfessorList {
-  List<String> professorList;
+  List<Professor> professorList;
   ProfessorList({this.professorList});
   factory ProfessorList.fromProfessorsJson(List<dynamic> professors) {
     if (professors == null) {
       return new ProfessorList(professorList: []);
     }
-    return new ProfessorList(professorList: professors.map((item) => item['professor_name']).toList());
+    return new ProfessorList(professorList: professors.map((item) => Professor.fromJson(item)).toList());
   }
 }

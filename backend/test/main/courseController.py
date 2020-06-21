@@ -24,11 +24,27 @@ class CourseControl(Resource):
             course_id=course_id,
             course_name=request.json['course_name'],
             avg_gpa=0,
+            A=0,
+            B=0,
+            C=0,
+            D=0,
+            F=0,
             professors=[],
         )
         course_document.save()
         return Response("Successfully added course", status=200)
 
+@api.route('/<course_id>/<professor_name>')
+@api.param('course_id','professor_name')
+@api.response(404, 'course not found.')
+class ProfessorControl(Resource):
+    def get(self,course_id,professor_name):
+        try:
+            _course = Course.objects.get(course_id=course_id)
+            _professor = _course.professors.filter(professor_name=professor_name).first()
+            return Response(_professor, mimetype="application/json", status=200)
+        except Course.DoesNotExist:
+            api.abort(404)
 
 @api.route('/professor/<course_id>')
 @api.param('course_id')
@@ -66,7 +82,9 @@ class TermControl(Resource):
             _professor.professor_students=p_student+request.json['term_students']
             c_student = _course.course_students
             new_c_avg = (c_student*_course.avg_gpa+request.json['term_avg']*request.json['term_students'])/(c_student+request.json['term_students'])
-            _course.update(course_students=c_student+request.json['term_students'], avg_gpa=new_c_avg)
+            _course.update(course_students=c_student+request.json['term_students'], avg_gpa=new_c_avg,
+                           A=_course.A+request.json['A'], B=_course.B+request.json['B'], C=_course.C+request.json['C'],
+                           D=_course.D+request.json['D'], F=_course.F+request.json['F'])
             _course.save()
         except Course.DoesNotExist:
             api.abort(404)
